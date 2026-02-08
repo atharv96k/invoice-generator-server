@@ -1,8 +1,6 @@
 # Invoice Generator API – Backend
 
-## **Part 1: Create an API to Store Invoice Details**
-
-This module implements the foundational backend API required to **store invoice details**.
+This module implements the foundational backend API required to **store and retrieve invoice details**.
 It follows a clean, layered architecture using **Spring Boot** and **MongoDB**, covering entity modeling, persistence, service logic, and REST controller exposure.
 
 ---
@@ -14,11 +12,12 @@ It follows a clean, layered architecture using **Spring Boot** and **MongoDB**, 
 ✔ Create MongoDB repository
 ✔ Create service layer
 ✔ Create REST controller
-⬜ Test the API (to be covered later)
+✔ Create POST API to store invoices
+✔ Create GET API to fetch all invoices
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 * **Java**
 * **Spring Boot**
@@ -29,7 +28,7 @@ It follows a clean, layered architecture using **Spring Boot** and **MongoDB**, 
 
 ---
 
-## Project Structure
+## 📂 Project Structure
 
 ```
 com.master.invoicegeneratorapi
@@ -49,7 +48,7 @@ com.master.invoicegeneratorapi
 
 ---
 
-## Invoice Entity
+## 📄 Invoice Entity
 
 The `Invoice` class represents the primary MongoDB document stored in the `invoices` collection.
 
@@ -58,7 +57,7 @@ The `Invoice` class represents the primary MongoDB document stored in the `invoi
 * `@Document(collection = "invoices")`
 * `@Id`
 * `@CreatedDate`
-* `@LastModifiedBy`
+* `@LastModifiedDate`
 * `@Data`
 
 ### Fields Overview
@@ -90,7 +89,7 @@ The `Invoice` class represents the primary MongoDB document stored in the `invoi
 
 ---
 
-## Repository Layer
+## 🗄️ Repository Layer
 
 ### InvoiceRepository
 
@@ -108,24 +107,29 @@ public interface InvoiceRepository
 
 ---
 
-## Service Layer
+## 🧠 Service Layer
 
 ### InvoiceService
 
 Encapsulates business logic for invoice operations.
 
-#### Available Method
+#### Available Methods
 
 * `saveInvoice(Invoice invoice)`
 
   * Saves invoice data to MongoDB
   * Returns the persisted invoice
 
-This layer ensures separation of concerns between the controller and database logic.
+* `fetchInvoice()`
+
+  * Fetches all stored invoices
+  * Returns a list of invoices
+
+This layer ensures proper separation of concerns between the controller and repository.
 
 ---
 
-## Controller Layer
+## 🌐 Controller Layer
 
 ### InvoiceController
 
@@ -137,50 +141,64 @@ Exposes REST endpoints for invoice operations.
 /api/invoices
 ```
 
-#### Create Invoice Endpoint
+---
 
-| Property     | Value           |
-| ------------ | --------------- |
-| HTTP Method  | POST            |
-| Endpoint     | `/api/invoices` |
-| Request Body | Invoice JSON    |
-| Response     | Saved Invoice   |
+### ➕ Create Invoice
+
+| Property    | Value           |
+| ----------- | --------------- |
+| HTTP Method | POST            |
+| Endpoint    | `/api/invoices` |
+| Request     | Invoice JSON    |
+| Response    | Saved Invoice   |
 
 ```java
 @PostMapping
-public ResponseEntity<Invoice> saveInvoice(Invoice invoice)
+public ResponseEntity<Invoice> saveInvoice(@RequestBody Invoice invoice)
 ```
+
+---
+
+### 📄 Fetch All Invoices
+
+| Property    | Value            |
+| ----------- | ---------------- |
+| HTTP Method | GET              |
+| Endpoint    | `/api/invoices`  |
+| Response    | List of invoices |
+
+```java
+@GetMapping
+public ResponseEntity<List<Invoice>> fetchInvoice()
+```
+
+---
 
 ### Configuration
 
 * `@RestController`
 * `@RequiredArgsConstructor`
+* `@RequestMapping("/api/invoices")`
 * `@CrossOrigin("*")` (Allows all origins)
-
---- 
-
-## Current Status
-
-✔ Invoice storage API implemented
-✔ MongoDB integration completed
-✔ Clean layered architecture
-❌ API testing pending
 
 ---
 
-## Next Steps (Upcoming Parts)
+## 📌 Current Status
 
-* Test the API
-* Add GET, UPDATE, DELETE endpoints
+✔ Invoice storage API implemented
+✔ Invoice fetch API implemented
+✔ MongoDB integration completed
+✔ Clean layered architecture
+✔  API testing
+
+---
+
+## 🔜 Next Steps (Upcoming Parts)
+
+* Add UPDATE and DELETE endpoints
+* Pagination & sorting
+* DTOs and validation
 * PDF generation
 * Invoice templates
 * Authentication & authorization
 
----
-
-## Summary
-
-**Part 1** delivers a complete backend API to **store invoice details**, forming the foundation for all future invoice-related features.
-
----
- 

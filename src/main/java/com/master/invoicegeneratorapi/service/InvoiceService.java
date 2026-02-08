@@ -1,5 +1,7 @@
 package com.master.invoicegeneratorapi.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.master.invoicegeneratorapi.enitity.Invoice;
@@ -15,5 +17,9 @@ public class InvoiceService {
 	
 	public Invoice saveInvoice(Invoice invoice) {
 		return invoiceRepository.save(invoice);
+	}
+	
+	public List<Invoice> fetchInvoice(){
+		return invoiceRepository.findAll();
 	}
 }
